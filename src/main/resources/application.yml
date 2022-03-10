@@ -1,0 +1,17 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: logistics-service
+  datasource:
+    url: jdbc:postgresql://0.0.0.0:5432/jwt-demo
+    username: postgres
+    password: postgres
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true

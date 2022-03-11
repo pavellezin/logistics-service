@@ -1,6 +1,6 @@
 package pro.paullezin.logisticsservice.model;
 
-public enum DriverLicenseCategory {
+public enum Category {
     A,
     B,
     C,

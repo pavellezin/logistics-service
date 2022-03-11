@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pro.paullezin.logisticsservice.model.DriverLicense;
 import pro.paullezin.logisticsservice.service.DriverLicenseService;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -38,9 +39,9 @@ public class DriverLicenseController {
 
     @PostMapping(value = "/license/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<DriverLicense> addLicense(@RequestBody DriverLicense license) {
+    public ResponseEntity<DriverLicense> addLicense(@Valid @RequestBody DriverLicense license) {
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/account")
+                .path("/api/license")
                 .build().toUri();
         return ResponseEntity.created(uri).body(driverLicenseService.saveDriverLicense(license));
     }

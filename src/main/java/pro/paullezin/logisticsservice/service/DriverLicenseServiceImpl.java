@@ -39,7 +39,7 @@ public class DriverLicenseServiceImpl implements DriverLicenseService {
 
     @Override
     public List<DriverLicense> getAll() {
-        log.info("Get all driver licenses");
+        log.info("Get all driver licenses:");
         return driverLicenseRepo.findAll();
     }
 }

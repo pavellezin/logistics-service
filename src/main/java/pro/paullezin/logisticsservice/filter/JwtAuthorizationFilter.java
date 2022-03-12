@@ -11,7 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import pro.paullezin.logisticsservice.security.JwtPropertyProvider;
+import pro.paullezin.logisticsservice.properties.ServicePropertyProvider;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -27,7 +27,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
-    private final JwtPropertyProvider jwtPropertyProvider;
+    private final ServicePropertyProvider servicePropertyProvider;
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
@@ -39,7 +39,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String token = authorizationHeader.substring("Bearer ".length());
-            Algorithm alg = Algorithm.HMAC256(jwtPropertyProvider.getSecret().getBytes());
+            Algorithm alg = Algorithm.HMAC256(servicePropertyProvider.getSecret().getBytes());
             JWTVerifier jwtVerifier = JWT.require(alg).build();
             DecodedJWT decodedJWT = jwtVerifier.verify(token);
             String username = decodedJWT.getSubject();

@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import pro.paullezin.logisticsservice.error.IllegalRequestDataException;
 import pro.paullezin.logisticsservice.model.Driver;
 import pro.paullezin.logisticsservice.model.DriverLicense;
-import pro.paullezin.logisticsservice.model.Transport;
 import pro.paullezin.logisticsservice.repo.DriverLicenseRepo;
 import pro.paullezin.logisticsservice.repo.DriverRepo;
 
@@ -21,7 +20,6 @@ import java.util.List;
 public class DriverServiceImpl implements DriverService {
     private final DriverRepo driverRepo;
     private final DriverLicenseRepo driverLicenseRepo;
-    public final int TRANSPORT_LIMIT = 3;
 
     @Override
     public Driver saveDriver(Driver driver) {
@@ -72,14 +70,4 @@ public class DriverServiceImpl implements DriverService {
         return driver;
     }
 
-    @Override
-    public boolean assignTransport(Driver driver, Transport transport) {
-        log.info("Assign transport [{}] for driver [{}]", transport.getRegnum(), driver.getName());
-        return false;
-    }
-
-    @Override
-    public boolean removeTransport(Driver driver, Transport transport) {
-        return false;
-    }
 }

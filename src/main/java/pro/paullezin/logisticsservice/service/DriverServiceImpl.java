@@ -59,7 +59,9 @@ public class DriverServiceImpl implements DriverService {
         DriverLicense license = driverLicenseRepo.findByNumber(number).orElseThrow(
                 () -> new IllegalRequestDataException("Driver license with number [" + number + "] not found")
         );
-        Driver driver = driverRepo.getById(driver_id);
+        Driver driver = driverRepo.findById(driver_id).orElseThrow(
+                () -> new IllegalRequestDataException("Driver with id [" + driver_id + "] not found")
+        );
         if (driver.getLicense() == null) {
             driver.setLicense(license);
             driverRepo.save(driver);

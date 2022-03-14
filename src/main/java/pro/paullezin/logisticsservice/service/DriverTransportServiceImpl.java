@@ -2,6 +2,7 @@ package pro.paullezin.logisticsservice.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pro.paullezin.logisticsservice.error.IllegalRequestDataException;
@@ -22,6 +23,7 @@ public class DriverTransportServiceImpl implements DriverTransportService {
     private final DriverRepo driverRepo;
     private final TransportRepo transportRepo;
     private final DriverTransportRepo driverTransportRepo;
+    private final KafkaTemplate<String, DriverTransport> kafkaTemplate;
 
     @Override
     @Transactional
@@ -36,8 +38,9 @@ public class DriverTransportServiceImpl implements DriverTransportService {
         if (!driver.getLicense().getCategories().contains(transport.getCategory())) {
             throw new InvalidDriverLicenseException("Driver with id [" + driver_id + "] have no valid driver license category");
         }
-        DriverTransport driverTransport = new DriverTransport(driver, transport);
-        return driverTransportRepo.save(driverTransport);
+        DriverTransport driverTransport = driverTransportRepo.save(new DriverTransport(driver, transport));
+        kafkaTemplate.send("transport-order", driverTransport);
+        return driverTransport;
     }
 
     @Override
@@ -51,6 +54,7 @@ public class DriverTransportServiceImpl implements DriverTransportService {
         driverTransport.setAction(action);
         driverTransport.setStatus(Status.ARCHIVE);
         driverTransport.setModified(new Timestamp(System.currentTimeMillis()));
+        kafkaTemplate.send("transport-order", driverTransport);
         return driverTransport;
     }
 

@@ -13,4 +13,7 @@ public interface DriverTransportRepo extends JpaRepository<DriverTransport, Stri
 
     @Query("SELECT dt FROM DriverTransport dt WHERE dt.driver.id = :driver_id AND dt.status = 'ACTIVE'")
     List<DriverTransport> findAllActiveDriverTransport(String driver_id);
+
+    @Query("SELECT dt FROM DriverTransport dt WHERE dt.driver.id = :driver_id")
+    List<DriverTransport> findAllDriverTransport(String driver_id);
 }

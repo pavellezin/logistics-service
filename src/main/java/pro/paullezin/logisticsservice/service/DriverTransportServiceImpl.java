@@ -66,4 +66,16 @@ public class DriverTransportServiceImpl implements DriverTransportService {
         transports.forEach(t -> removeTransport(driver_id, t.getTransport().getRegnum(), action));
         return transports.size();
     }
+
+    @Override
+    public List<DriverTransport> findAllDriverTransport(String driver_id) {
+        log.info("Find all transport history for driver with id [{}]", driver_id);
+        return driverTransportRepo.findAllDriverTransport(driver_id);
+    }
+
+    @Override
+    public List<DriverTransport> findAllDriverTransportAssignment() {
+        log.info("Find all transport assigment history");
+        return driverTransportRepo.findAll();
+    }
 }

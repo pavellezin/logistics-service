@@ -38,7 +38,7 @@ public class DriverTransportServiceImpl implements DriverTransportService {
         if (!driver.getLicense().getCategories().contains(transport.getCategory())) {
             throw new InvalidDriverLicenseException("Driver with id [" + driver_id + "] have no valid driver license category");
         }
-        DriverTransport driverTransport = driverTransportRepo.save(new DriverTransport(driver, transport));
+        DriverTransport driverTransport = driverTransportRepo.saveAndFlush(new DriverTransport(driver, transport));
         kafkaTemplate.send("transport-order", driverTransport);
         return driverTransport;
     }
